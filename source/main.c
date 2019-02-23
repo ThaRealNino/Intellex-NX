@@ -10,7 +10,9 @@ int state = 0;
 int nameCounter = 0;
 int alphabetCounter = 0;
 int numberCounter = 0;
-int age = 0;
+int age = 1;
+bool hasCalculated = false;
+int randomNumber = 0;
 
 void printInfo() {
     printf("\nINTELLEX\n\n");
@@ -20,9 +22,34 @@ void printInfo() {
     printf("PLUS to quit\n\n");
 }
 
+int calculateIQ() {
+	
+	if(strcmp(name, "NIKOLAI   ") == 0) {
+		
+		return 230;
+		
+	} else if(hasCalculated) {
+	
+		return randomNumber;
+		
+	} else {
+		
+		randomNumber = 1000 * number[0] + 100 * number[1] + 10 * number[2] + number[3];
+		
+		while(randomNumber > 200) {
+			
+			randomNumber -= age * 5;
+		}
+		
+		hasCalculated = true;
+		
+		return randomNumber;
+	}
+}
+
 void reset() {
 
-	for(int c = 0; c < sizeof(name) -2; c++) {
+	for(int c = 0; c < sizeof(name) -1; c++) {
 		name[c] = ' ';
 	}
 
@@ -34,7 +61,8 @@ void reset() {
 	nameCounter = 0;
 	alphabetCounter = 0;
 	numberCounter = 0;
-	age = 0;
+	age = 1;
+	hasCalculated = false;
 }
 
 char compareCharacters(char a,char b){
@@ -113,7 +141,7 @@ void processInput(u64 keyDown) {
 			
         } else if(keyDown & KEY_DUP) {
 		
-			if(age > 0) {
+			if(age > 1) {
 				age--;
 			}
 			
@@ -165,7 +193,7 @@ void processInput(u64 keyDown) {
 			
 		} else if(keyDown & KEY_DRIGHT) {
 			
-			if(numberCounter < (sizeof(number) - 3)) {
+			if(numberCounter < 3) {
 				numberCounter++;
 			}
 			
@@ -191,7 +219,8 @@ void processInput(u64 keyDown) {
 		printf("Number: ");
 		printf("%i%i%i%i\n\n", number[0], number[1], number[2], number[3]);
 		
-		printf("Your IQ: 5\n");
+		
+		printf("Your IQ: %i\n", calculateIQ());
 		printf("Press MINUS to restart");
 		
 		if(keyDown & KEY_MINUS) {
